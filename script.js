@@ -37,9 +37,119 @@ document.addEventListener('DOMContentLoaded', function() {
         errorMessages['marital_status'] = errorDiv;
     }
     
+    // Function to apply uppercase to any input or textarea
+    function applyUppercaseToField(field) {
+        if (!field) return;
+        
+        field.addEventListener('input', function() {
+            // Save cursor position for inputs and textareas
+            if (this.tagName === 'INPUT' || this.tagName === 'TEXTAREA') {
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                
+                // Convert to uppercase
+                this.value = this.value.toUpperCase();
+                
+                // Restore cursor position
+                this.setSelectionRange(start, end);
+            }
+        });
+        
+        field.addEventListener('blur', function() {
+            this.value = this.value.toUpperCase();
+        });
+    }
+    
+    // Apply uppercase to basic fields
+    const uppercaseFields = [
+        'last_name', 'first_name', 'middle_name', 'suffix', 
+        'nationality', 'birthplace'
+    ];
+    
+    uppercaseFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        applyUppercaseToField(field);
+    });
+    
+    // Apply uppercase to home address (textarea)
+    if (homeAddressInput) {
+        applyUppercaseToField(homeAddressInput);
+    }
+    
+    // Apply uppercase to dependent fields
+    function applyUppercaseToDependentFields() {
+        // Dependent name fields
+        document.querySelectorAll('input[name="dependent_name[]"]').forEach(field => {
+            applyUppercaseToField(field);
+        });
+        
+        // Dependent relationship fields
+        document.querySelectorAll('input[name="dependent_relationship[]"]').forEach(field => {
+            applyUppercaseToField(field);
+        });
+    }
+    
+    // Apply uppercase to employment section fields
+    function applyUppercaseToEmploymentFields() {
+        // Profession/Business field
+        const professionField = document.querySelector('input[name="profession"]');
+        applyUppercaseToField(professionField);
+        
+        // Foreign Address field
+        const foreignAddressField = document.querySelector('input[name="foreign_address"]');
+        applyUppercaseToField(foreignAddressField);
+        
+        // Monthly Earnings (SE) - only the currency amount, not the ₱ symbol
+        const monthlyEarningsField = document.querySelector('input[name="monthly_earnings"]');
+        if (monthlyEarningsField) {
+            // Don't apply uppercase to currency fields as they should be numbers
+            // This field should remain as numbers only
+        }
+        
+        // OFW Monthly Earnings - only the currency amount, not the ₱ symbol
+        const ofwMonthlyEarningsField = document.querySelector('input[name="ofw_monthly_earnings"]');
+        if (ofwMonthlyEarningsField) {
+            // Don't apply uppercase to currency fields as they should be numbers
+            // This field should remain as numbers only
+        }
+        
+        // Spouse Income - only the currency amount, not the ₱ symbol
+        const spouseIncomeField = document.querySelector('input[name="spouse_income"]');
+        if (spouseIncomeField) {
+            // Don't apply uppercase to currency fields as they should be numbers
+            // This field should remain as numbers only
+        }
+        
+        // Year Started field (should be numbers only)
+        const yearStartedField = document.querySelector('input[name="year_started"]');
+        if (yearStartedField) {
+            // Don't apply uppercase as this should be numbers
+        }
+        
+        // SS Number of Working Spouse
+        const spouseSSNumberField = document.querySelector('input[name="spouse_ss_number"]');
+        applyUppercaseToField(spouseSSNumberField);
+    }
+    
+    // Apply uppercase to certification fields
+    function applyUppercaseToCertificationFields() {
+        // Printed Name field
+        const printedNameField = document.querySelector('input[name="printed_name"]');
+        applyUppercaseToField(printedNameField);
+        
+        // Signature field
+        const signatureField = document.querySelector('input[name="signature"]');
+        applyUppercaseToField(signatureField);
+    }
+    
+    // Initialize all uppercase conversions
+    applyUppercaseToDependentFields();
+    applyUppercaseToEmploymentFields();
+    applyUppercaseToCertificationFields();
+    
     sameAddressCheckbox.addEventListener('change', function() {
         if (this.checked) {
-            birthplaceInput.value = homeAddressInput.value;
+            birthplaceInput.value = homeAddressInput.value.toUpperCase();
             birthplaceInput.disabled = true;
             birthplaceInput.style.backgroundColor = '#f5f5f5';
             birthplaceInput.style.cursor = 'not-allowed';
@@ -51,9 +161,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Update birthplace when home address changes
     homeAddressInput.addEventListener('input', function() {
         if (sameAddressCheckbox.checked) {
-            birthplaceInput.value = this.value;
+            birthplaceInput.value = this.value.toUpperCase();
         }
     });
     

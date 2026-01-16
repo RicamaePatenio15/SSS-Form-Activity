@@ -6,6 +6,21 @@
     <title>SS Number Issuance</title>
     <link rel="stylesheet" href="design/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Remove black borders/outlines on focus */
+        input:focus, textarea:focus {
+            outline: none;
+            box-shadow: none;
+        }
+        
+        /* Make placeholders normal case */
+        input[name="last_name"]::placeholder,
+        input[name="first_name"]::placeholder,
+        input[name="middle_name"]::placeholder,
+        input[name="suffix"]::placeholder {
+            text-transform: none;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -30,31 +45,24 @@
                 <div class="maroon-bar">PART 1 - PERSONAL DETAILS</div>
                 
                 <div class="row">
-                    <div class="field full">
-                        <label>LAST NAME *</label>
-                        <input type="text" name="last_name" id="last_name">
-                    </div>
+                <div class="field quarter">
+                    <label>LAST NAME *</label>
+                    <input type="text" name="last_name" id="last_name" placeholder="Last Name">
                 </div>
-                
-                <div class="row">
-                    <div class="field three-quarter">
-                        <label>FIRST NAME *</label>
-                        <input type="text" name="first_name" id="first_name">
-                    </div>
-                    <div class="field quarter">
-                        <label>MIDDLE NAME</label>
-                        <input type="text" name="middle_name">
-                    </div>
+                <div class="field quarter">
+                    <label>FIRST NAME *</label>
+                    <input type="text" name="first_name" id="first_name" placeholder="First Name">
                 </div>
-                
-                <div class="row">
-                    <div class="field quarter">
-                        <label>SUFFIX</label>
-                        <input type="text" name="suffix">
-                    </div>
+                <div class="field quarter">
+                    <label>MIDDLE NAME</label>
+                    <input type="text" name="middle_name" id="middle_name" placeholder="Middle Name">
                 </div>
-                
-                <div class="row">
+                <div class="field quarter">
+                    <label>SUFFIX</label>
+                    <input type="text" name="suffix" id="suffix" placeholder="Suffix">
+                </div>
+            </div>
+                            <div class="row">
                     <div class="field">
                         <label>GENDER *</label>
                         <div class="checkbox-options">
@@ -74,24 +82,22 @@
                     </div>
                 </div>
                 
-                <div class="row">
-                    <div class="field">
-                        <label>DATE OF BIRTH (MM/DD/YYYY) *</label>
-                        <input type="date" name="birthdate" id="birthdate">
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="field">
-                        <label>NATIONALITY *</label>
-                        <input type="text" name="nationality" id="nationality" placeholder="e.g., Filipino">
-                    </div>
-                </div>
+
+              <div class="row">
+    <div class="field">
+        <label>DATE OF BIRTH (MM/DD/YYYY) *</label>
+        <input type="date" name="birthdate" id="birthdate">
+    </div>
+    <div class="field">
+        <label>NATIONALITY *</label>
+        <input type="text" name="nationality" id="nationality" placeholder="e.g., Filipino">
+    </div>
+</div>
 
                 <div class="row">
                     <div class="field full">
                         <label>HOME ADDRESS *</label>
-                        <input name="home_address" id="home_address" rows="2" placeholder="House No., Street, Barangay, City, Province"></input>
+                        <input type="text" id="home_address" rows="2" placeholder="House No., Street, Barangay, City, Province"></input>
                     </div>
                 </div>
                 
@@ -131,8 +137,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>1. <input type="text" name="dependent_name[]"></td><td><input type="text" name="dependent_relationship[]"></td><td><input type="date" name="dependent_dob[]" class="small-input"></td></tr>
-                        <tr><td>2. <input type="text" name="dependent_name[]"></td><td><input type="text" name="dependent_relationship[]"></td><td><input type="date" name="dependent_dob[]" class="small-input"></td></tr>
+                        <tr><td><input type="text" name="dependent_name[]"></td><td><input type="text" name="dependent_relationship[]"></td><td><input type="date" name="dependent_dob[]" class="small-input"></td></tr>
+                        <tr><td><input type="text" name="dependent_name[]"></td><td><input type="text" name="dependent_relationship[]"></td><td><input type="date" name="dependent_dob[]" class="small-input"></td></tr>
+                        <tr><td><input type="text" name="dependent_name[]"></td><td><input type="text" name="dependent_relationship[]"></td><td><input type="date" name="dependent_dob[]" class="small-input"></td></tr>
+                        <tr><td><input type="text" name="dependent_name[]"></td><td><input type="text" name="dependent_relationship[]"></td><td><input type="date" name="dependent_dob[]" class="small-input"></td></tr>
                     </tbody>
                 </table>
             </section>
