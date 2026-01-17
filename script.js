@@ -63,7 +63,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Apply uppercase to basic fields
     const uppercaseFields = [
         'last_name', 'first_name', 'middle_name', 'suffix', 
-        'nationality', 'birthplace'
+        'nationality', 'birthplace',
+        // Parents' fields
+        'father_last_name', 'father_first_name', 'father_middle_name', 'father_suffix',
+        'mother_last_name', 'mother_first_name', 'mother_middle_name', 'mother_suffix'
     ];
     
     uppercaseFields.forEach(fieldId => {
