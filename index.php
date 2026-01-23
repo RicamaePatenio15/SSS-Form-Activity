@@ -1,11 +1,16 @@
 <?php
+// 1. Database Connection
 $conn = new mysqli("localhost", "root", "", "patenio_form");
 
+// Check connection
 if ($conn->connect_error) {
     $next_ss_number = 1; 
 } else {
+    // 2. Get the current maximum ID
     $result = $conn->query("SELECT MAX(id) AS max_id FROM tbl_record");
     $row = $result->fetch_assoc();
+    
+    // If table is empty, max_id is null, so we start at 1
     $next_ss_number = ($row['max_id'] === null) ? 1 : $row['max_id'] + 1;
 }
 
@@ -55,7 +60,7 @@ $formatted_ss = substr($raw, 0, 2) . "-" . substr($raw, 2, 7) . "-" . substr($ra
             </div>
         </header>
 
-        <form id="sssForm" action="save.php" method="POST">
+        <form id="sssForm">
             <section class="section">
                 <div class="maroon-bar">PART 1 - PERSONAL DETAILS</div>
 
@@ -102,7 +107,7 @@ $formatted_ss = substr($raw, 0, 2) . "-" . substr($raw, 2, 7) . "-" . substr($ra
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="field">
                         <label>DATE OF BIRTH (MM/DD/YYYY) *</label>
@@ -114,23 +119,23 @@ $formatted_ss = substr($raw, 0, 2) . "-" . substr($raw, 2, 7) . "-" . substr($ra
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="field full">
+                        <label>HOME ADDRESS (House No., Street, Barangay, City, Province) *</label>
+                        <input type="text" name="home_address" id="home_address" placeholder="House No., Street, Barangay, City, Province">
+                    </div>
+                </div>
+                
                 <div class="row" id="birthplace_group">
                     <div class="field full">
                         <label>PLACE OF BIRTH *</label>
                         <input type="text" name="birthplace" id="birthplace" placeholder="City, Province, Country">
                         <div class="checkbox-option" style="margin-top: 5px;">
-                            <label style="font-size: 11px; display: inline-flex; align-items: center; cursor: pointer;">
-                                <input type="checkbox" name="same_as_home" id="same_as_home_address" style="margin-right: 4px; width: auto;" value="1">
+                            <label style="font-size: 8px; display: inline-flex; align-items: center; cursor: pointer;">
+                                <input type="checkbox" id="same_as_home_address" style="margin-right: 4px; width: auto;">
                                 The same with Home Address
                             </label>
                         </div>
-                    </div>
-                </div>
-
-                <div class="row" id="home_address_container">
-                    <div class="field full">
-                        <label>HOME ADDRESS (House No., Street, Barangay, City, Province) *</label>
-                        <input type="text" name="home_address" id="home_address" placeholder="House No., Street, Barangay, City, Province">
                     </div>
                 </div>
                 
@@ -148,15 +153,121 @@ $formatted_ss = substr($raw, 0, 2) . "-" . substr($raw, 2, 7) . "-" . substr($ra
 
             <section class="section">
                 <div class="maroon-bar">PARENTS' INFORMATION</div>
+                <div class="row">
+                    <div class="field full">
+                        <label>FATHER'S NAME</label>
+                        <div class="row">
+                            <div class="field quarter">
+                                <label>LAST NAME</label>
+                                <input type="text" name="father_last_name" id="father_last_name" placeholder="Last Name">
+                            </div>
+                            <div class="field quarter">
+                                <label>FIRST NAME</label>
+                                <input type="text" name="father_first_name" id="father_first_name" placeholder="First Name">
+                            </div>
+                            <div class="field quarter">
+                                <label>MIDDLE NAME</label>
+                                <input type="text" name="father_middle_name" placeholder="Middle Name">
+                            </div>
+                            <div class="field quarter">
+                                <label>SUFFIX</label>
+                                <input type="text" name="father_suffix" placeholder="Suffix">
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="row">
-                    <div class="field half">
-                        <label>FATHER'S FULL NAME</label>
-                        <input type="text" name="father_name" id="father_name" placeholder="Last Name, First Name, Middle Name">
-                    </div>
-                    <div class="field half">
+                    <div class="field full">
                         <label>MOTHER'S MAIDEN NAME</label>
-                        <input type="text" name="mother_name" id="mother_name" placeholder="Last Name, First Name, Middle Name">
+                        <div class="row">
+                            <div class="field quarter">
+                                <label>LAST NAME</label>
+                                <input type="text" name="mother_last_name" id="mother_last_name" placeholder="Last Name">
+                            </div>
+                            <div class="field quarter">
+                                <label>FIRST NAME</label>
+                                <input type="text" name="mother_first_name" id="mother_first_name" placeholder="First Name">
+                            </div>
+                            <div class="field quarter">
+                                <label>MIDDLE NAME</label>
+                                <input type="text" name="mother_middle_name" placeholder="Middle Name">
+                            </div>
+                            <div class="field quarter">
+                                <label>SUFFIX</label>
+                                <input type="text" name="mother_suffix" placeholder="Suffix">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="maroon-bar">PART 2 - DEPENDENTS / BENEFICIARIES</div>
+                <table class="grid-table">
+                    <thead>
+                        <tr>
+                            <th>NAME (LAST, FIRST, MIDDLE, SUFFIX)</th>
+                            <th>RELATIONSHIP</th>
+                            <th>DATE OF BIRTH</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><input type="text" name="dep_name[]"></td><td><input type="text" name="dep_rel[]"></td><td><input type="date" name="dep_dob[]" class="small-input"></td></tr>
+                        <tr><td><input type="text" name="dep_name[]"></td><td><input type="text" name="dep_rel[]"></td><td><input type="date" name="dep_dob[]" class="small-input"></td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="section">
+                <div class="maroon-bar">C. FOR SELF-EMPLOYED/OVERSEAS FILIPINO WORKER/NON-WORKING SPOUSE</div>
+                <div class="employment-grid">
+                    <div class="col-se">
+                        <div class="gray-header">SELF-EMPLOYED (SE)</div>
+                        <div class="p-5">
+                            <label>Profession/Business</label>
+                            <input type="text" name="profession" class="underline">
+                            <label>Year Started</label>
+                            <input type="text" name="year_started" class="underline">
+                            <label>Monthly Earnings</label>
+                            <div class="currency">₱ <input type="text" name="monthly_earnings" class="underline"></div>
+                        </div>
+                    </div>
+                    <div class="col-ofw">
+                        <div class="gray-header">OVERSEAS FILIPINO WORKER (OFW)</div>
+                        <div class="p-5">
+                            <label>Foreign Address</label>
+                            <input type="text" name="foreign_address" class="underline">
+                            <label>Monthly Earnings</label>
+                            <div class="currency">₱ <input type="text" name="ofw_monthly_earnings" class="underline"></div>
+                        </div>
+                    </div>
+                    <div class="col-nws">
+                        <div class="gray-header">NON-WORKING SPOUSE (NWS)</div>
+                        <div class="p-5">
+                            <label>SS No. of Working Spouse</label>
+                            <input type="text" name="spouse_ss_number" class="spaced-digits" placeholder="__ - ________ - _">
+                            <label>Monthly Income of Spouse</label>
+                            <div class="currency">₱ <input type="text" name="spouse_income" class="underline"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section border-top">
+                <div class="maroon-bar">D. CERTIFICATION</div>
+                <div class="cert-container">
+                    <div class="cert-text">
+                        <p>I certify that the information provided in this form is true and correct.</p>
+                        <div class="sig-block">
+                            <div class="sig-input"><input type="text" name="printed_name"> <p>PRINTED NAME</p></div>
+                            <div class="sig-input"><input type="text" name="signature"> <p>SIGNATURE</p></div>
+                            <div class="sig-input"><input type="date" name="cert_date"> <p>DATE</p></div>
+                        </div>
+                    </div>
+                    <div class="fingerprint-container">
+                        <div class="f-box"><div class="ink"></div><p>RIGHT THUMB</p></div>
+                        <div class="f-box"><div class="ink"></div><p>RIGHT INDEX</p></div>
                     </div>
                 </div>
             </section>
@@ -175,15 +286,6 @@ $formatted_ss = substr($raw, 0, 2) . "-" . substr($raw, 2, 7) . "-" . substr($ra
         </form>
     </div>
 
-    <script>
-        document.getElementById('same_as_home_address').addEventListener('change', function() {
-            const homeAddressContainer = document.getElementById('home_address_container');
-            if (this.checked) {
-                homeAddressContainer.style.display = 'none';
-            } else {
-                homeAddressContainer.style.display = 'block';
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

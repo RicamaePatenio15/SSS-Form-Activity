@@ -13,6 +13,7 @@ if ($conn->connect_error) {
     exit;
 }
 
+// 1. Collect Personal Data
 $last_name      = $_POST['last_name'] ?? '';
 $first_name     = $_POST['first_name'] ?? '';
 $middle_name    = $_POST['middle_name'] ?? '';
@@ -26,6 +27,7 @@ $home_address   = $_POST['home_address'] ?? '';
 $phone_number   = $_POST['phone_number'] ?? '';
 $email          = $_POST['email'] ?? '';
 
+// 2. Collect Parents' Data
 $f_last   = $_POST['father_last_name'] ?? '';
 $f_first  = $_POST['father_first_name'] ?? '';
 $f_mid    = $_POST['father_middle_name'] ?? '';
@@ -36,6 +38,7 @@ $m_first  = $_POST['mother_first_name'] ?? '';
 $m_mid    = $_POST['mother_middle_name'] ?? '';
 $m_suffix = $_POST['mother_suffix'] ?? '';
 
+// 3. Updated SQL with 20 placeholders (?)
 $sql = "INSERT INTO tbl_record (
     last_name, first_name, middle_name, suffix, gender, marital_status, 
     birthdate, nationality, birthplace, home_address, phone_number, email,
@@ -45,6 +48,7 @@ $sql = "INSERT INTO tbl_record (
 
 $stmt = $conn->prepare($sql);
 
+// "s" repeated 20 times for 20 string variables
 $stmt->bind_param("ssssssssssssssssssss", 
     $last_name, $first_name, $middle_name, $suffix, $gender, $marital_status, 
     $birthdate, $nationality, $birthplace, $home_address, $phone_number, $email,
