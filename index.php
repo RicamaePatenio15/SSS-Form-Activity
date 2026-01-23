@@ -23,6 +23,7 @@
     </style>
 </head>
 <body>
+     <!--START OF PERSONAL INFORMATION SECTION -->
     <div class="container">
         <header class="form-header">
             <div class="header-left">
@@ -131,7 +132,7 @@
                     </div>
                 </div>
             </section>
-
+               <!--END OF PERSONAL INFORMATION SECTION -->
             <!-- PARENTS' INFORMATION SECTION (NEW) -->
             <section class="section">
                 <div class="maroon-bar">PARENTS' INFORMATION</div>

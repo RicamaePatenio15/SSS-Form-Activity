@@ -37,34 +37,9 @@ document.addEventListener('DOMContentLoaded', function() {
         errorMessages['marital_status'] = errorDiv;
     }
     
-    // Function to apply uppercase to any input or textarea
-    function applyUppercaseToField(field) {
-        if (!field) return;
-        
-        field.addEventListener('input', function() {
-            // Save cursor position for inputs and textareas
-            if (this.tagName === 'INPUT' || this.tagName === 'TEXTAREA') {
-                const start = this.selectionStart;
-                const end = this.selectionEnd;
-                
-                // Convert to uppercase
-                this.value = this.value.toUpperCase();
-                
-                // Restore cursor position
-                this.setSelectionRange(start, end);
-            }
-        });
-        
-        field.addEventListener('blur', function() {
-            this.value = this.value.toUpperCase();
-        });
-    }
-    
-  
-    
     sameAddressCheckbox.addEventListener('change', function() {
         if (this.checked) {
-            birthplaceInput.value = homeAddressInput.value.toUpperCase();
+            birthplaceInput.value = homeAddressInput.value;
             birthplaceInput.disabled = true;
             birthplaceInput.style.backgroundColor = '#f5f5f5';
             birthplaceInput.style.cursor = 'not-allowed';
@@ -76,10 +51,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Update birthplace when home address changes
     homeAddressInput.addEventListener('input', function() {
         if (sameAddressCheckbox.checked) {
-            birthplaceInput.value = this.value.toUpperCase();
+            birthplaceInput.value = this.value;
         }
     });
     
