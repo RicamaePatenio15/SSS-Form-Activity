@@ -8,7 +8,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const errorMessages = {};
     
-    ['last_name', 'first_name', 'birthdate', 'nationality', 'home_address', 'birthplace', 'phone_number', 'email'].forEach(fieldId => {
+    [
+        'last_name', 'first_name', 'birthdate', 'nationality', 'home_address', 
+        'birthplace', 'phone_number', 'email',
+        'father_last_name', 'father_first_name', 'mother_last_name', 'mother_first_name'
+    ].forEach(fieldId => {
         const input = document.getElementById(fieldId);
         if (input) {
             const errorDiv = document.createElement('div');
@@ -37,20 +41,14 @@ document.addEventListener('DOMContentLoaded', function() {
         errorMessages['marital_status'] = errorDiv;
     }
     
-    // Function to apply uppercase to any input or textarea
     function applyUppercaseToField(field) {
         if (!field) return;
         
         field.addEventListener('input', function() {
-            // Save cursor position for inputs and textareas
             if (this.tagName === 'INPUT' || this.tagName === 'TEXTAREA') {
                 const start = this.selectionStart;
                 const end = this.selectionEnd;
-                
-                // Convert to uppercase
                 this.value = this.value.toUpperCase();
-                
-                // Restore cursor position
                 this.setSelectionRange(start, end);
             }
         });
@@ -59,24 +57,23 @@ document.addEventListener('DOMContentLoaded', function() {
             this.value = this.value.toUpperCase();
         });
     }
-    
-  
+
+    document.querySelectorAll('input[type="text"]').forEach(applyUppercaseToField);
     
     sameAddressCheckbox.addEventListener('change', function() {
         if (this.checked) {
             birthplaceInput.value = homeAddressInput.value.toUpperCase();
-            birthplaceInput.disabled = true;
+            birthplaceInput.readOnly = true; 
             birthplaceInput.style.backgroundColor = '#f5f5f5';
             birthplaceInput.style.cursor = 'not-allowed';
             clearError('birthplace');
         } else {
-            birthplaceInput.disabled = false;
+            birthplaceInput.readOnly = false;
             birthplaceInput.style.backgroundColor = '';
             birthplaceInput.style.cursor = '';
         }
     });
     
-    // Update birthplace when home address changes
     homeAddressInput.addEventListener('input', function() {
         if (sameAddressCheckbox.checked) {
             birthplaceInput.value = this.value.toUpperCase();
@@ -94,7 +91,11 @@ document.addEventListener('DOMContentLoaded', function() {
             { id: 'nationality', name: 'Nationality' },
             { id: 'home_address', name: 'Home Address' },
             { id: 'phone_number', name: 'Mobile Number' },
-            { id: 'email', name: 'Email Address' }
+            { id: 'email', name: 'Email Address' },
+            { id: 'father_last_name', name: "Father's Last Name" },
+            { id: 'father_first_name', name: "Father's First Name" },
+            { id: 'mother_last_name', name: "Mother's Last Name" },
+            { id: 'mother_first_name', name: "Mother's First Name" }
         ];
         
         requiredFields.forEach(field => {
@@ -120,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const phone = document.getElementById('phone_number').value;
         const phoneRegex = /^(09|\+639)\d{9}$/;
         if (phone && !phoneRegex.test(phone.replace(/\D/g, ''))) {
-            showError('phone_number', 'Please enter a valid Philippine mobile number (09XXXXXXXXX or +639XXXXXXXXX)');
+            showError('phone_number', 'Please enter a valid Philippine mobile number');
             isValid = false;
         }
         
@@ -183,67 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    const realTimeFields = ['last_name', 'first_name', 'nationality', 'home_address', 'birthplace', 'phone_number', 'email'];
-    
-    realTimeFields.forEach(fieldId => {
-        const field = document.getElementById(fieldId);
-        if (field) {
-            field.addEventListener('blur', function() {
-                if (this.value.trim()) {
-                    clearError(fieldId);
-                }
-            });
-        }
-    });
-    
-    document.getElementById('email').addEventListener('blur', function() {
-        const email = this.value.trim();
-        if (email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showError('email', 'Please enter a valid email address');
-            } else {
-                clearError('email');
-            }
-        }
-    });
-    
-    document.getElementById('phone_number').addEventListener('blur', function() {
-        const phone = this.value.trim();
-        if (phone) {
-            const phoneRegex = /^(09|\+639)\d{9}$/;
-            if (!phoneRegex.test(phone.replace(/\D/g, ''))) {
-                showError('phone_number', 'Please enter a valid Philippine mobile number (09XXXXXXXXX or +639XXXXXXXXX)');
-            } else {
-                clearError('phone_number');
-            }
-        }
-    });
-    
-    document.getElementById('birthdate').addEventListener('change', function() {
-        if (this.value) {
-            const birthDate = new Date(this.value);
-            const today = new Date();
-            if (birthDate >= today) {
-                showError('birthdate', 'Date of Birth must be in the past');
-            } else {
-                clearError('birthdate');
-            }
-        }
-    });
-    
-    document.querySelectorAll('input[name="gender"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            clearError('gender');
-        });
-    });
-    
-    document.querySelectorAll('input[name="marital_status"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            clearError('marital_status');
-        });
-    });
-    
     form.addEventListener('submit', function(event) {
         event.preventDefault();
         
@@ -262,22 +202,14 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    formStatus.textContent = '✓ Form submitted successfully! Data has been saved to the database.';
+                    formStatus.textContent = '✓ Record saved successfully!';
                     formStatus.className = 'status-message success';
                     
                     setTimeout(() => {
-                        form.reset();
-                        submitBtn.disabled = false;
-                        formStatus.textContent = '';
-                        formStatus.className = '';
-                        if (sameAddressCheckbox.checked) {
-                            birthplaceInput.disabled = false;
-                            birthplaceInput.style.backgroundColor = '';
-                            birthplaceInput.style.cursor = '';
-                        }
-                    }, 3000);
+                        window.location.reload(); 
+                    }, 2000);
                 } else {
-                    formStatus.textContent = '✗ ' + (data.errors && data.errors.length > 0 ? data.errors[0] : 'Submission failed. Please try again.');
+                    formStatus.textContent = '✗ ' + (data.message || 'Submission failed.');
                     formStatus.className = 'status-message error';
                 }
             })
@@ -290,11 +222,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.disabled = false;
                 formStatus.scrollIntoView({ behavior: 'smooth' });
             });
-        } else {
-            formStatus.textContent = '✗ Please fix the errors in the form before submitting.';
-            formStatus.className = 'status-message error';
-            submitBtn.disabled = false;
-            formStatus.scrollIntoView({ behavior: 'smooth' });
         }
     });
 

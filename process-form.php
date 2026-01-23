@@ -1,24 +1,18 @@
 <?php
-// 1. Set the response type to JSON
 header('Content-Type: application/json');
 
-// 2. Database Configuration
 $host = "localhost";
 $username = "root"; 
-$password = ""; // Default for XAMPP is empty
+$password = ""; 
 $dbname = "patenio_form";
 
-// 3. Connect to the Database
 $conn = new mysqli($host, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
-    echo json_encode(['success' => false, 'message' => 'Database connection failed: ' . $conn->connect_error]);
+    echo json_encode(['success' => false, 'message' => 'Database connection failed']);
     exit;
 }
 
-// 4. Collect and Sanitize Data
-// We use null coalescing (??) to avoid "Undefined Index" notices
 $last_name      = $_POST['last_name'] ?? '';
 $first_name     = $_POST['first_name'] ?? '';
 $middle_name    = $_POST['middle_name'] ?? '';
@@ -32,31 +26,38 @@ $home_address   = $_POST['home_address'] ?? '';
 $phone_number   = $_POST['phone_number'] ?? '';
 $email          = $_POST['email'] ?? '';
 
-// 5. Basic Server-Side Validation
-if (empty($last_name) || empty($first_name) || empty($email)) {
-    echo json_encode(['success' => false, 'message' => 'Required fields are missing.']);
-    exit;
-}
+$f_last   = $_POST['father_last_name'] ?? '';
+$f_first  = $_POST['father_first_name'] ?? '';
+$f_mid    = $_POST['father_middle_name'] ?? '';
+$f_suffix = $_POST['father_suffix'] ?? '';
 
-// 6. Prepare the SQL Statement (Prevents SQL Injection)
-$sql = "INSERT INTO tbl_record (last_name, first_name, middle_name, suffix, gender, marital_status, birthdate, nationality, birthplace, home_address, phone_number, email) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$m_last   = $_POST['mother_last_name'] ?? '';
+$m_first  = $_POST['mother_first_name'] ?? '';
+$m_mid    = $_POST['mother_middle_name'] ?? '';
+$m_suffix = $_POST['mother_suffix'] ?? '';
+
+$sql = "INSERT INTO tbl_record (
+    last_name, first_name, middle_name, suffix, gender, marital_status, 
+    birthdate, nationality, birthplace, home_address, phone_number, email,
+    father_last_name, father_first_name, father_middle_name, father_suffix,
+    mother_last_name, mother_first_name, mother_middle_name, mother_suffix
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ssssssssssss", 
-    $last_name, $first_name, $middle_name, $suffix, $gender, 
-    $marital_status, $birthdate, $nationality, $birthplace, 
-    $home_address, $phone_number, $email
+
+$stmt->bind_param("ssssssssssssssssssss", 
+    $last_name, $first_name, $middle_name, $suffix, $gender, $marital_status, 
+    $birthdate, $nationality, $birthplace, $home_address, $phone_number, $email,
+    $f_last, $f_first, $f_mid, $f_suffix,
+    $m_last, $m_first, $m_mid, $m_suffix
 );
 
-// 7. Execute and Respond
 if ($stmt->execute()) {
-    echo json_encode(['success' => true, 'message' => 'Record saved successfully!']);
+    echo json_encode(['success' => true, 'message' => 'Record and Parent info saved!']);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Error saving record: ' . $stmt->error]);
+    echo json_encode(['success' => false, 'message' => 'Error: ' . $stmt->error]);
 }
 
-// 8. Close connections
 $stmt->close();
 $conn->close();
 ?>
