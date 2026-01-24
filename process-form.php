@@ -1,67 +1,113 @@
 <?php
 header('Content-Type: application/json');
 
-$host = "localhost";
-$username = "root"; 
-$password = ""; 
-$dbname = "patenio_form";
-
-$conn = new mysqli($host, $username, $password, $dbname);
-
+$conn = new mysqli("localhost", "root", "", "patenio_form");
 if ($conn->connect_error) {
-    echo json_encode(['success' => false, 'message' => 'Database connection failed']);
+    echo json_encode(['success' => false]);
     exit;
 }
 
-// 1. Collect Personal Data
-$last_name      = $_POST['last_name'] ?? '';
-$first_name     = $_POST['first_name'] ?? '';
-$middle_name    = $_POST['middle_name'] ?? '';
-$suffix         = $_POST['suffix'] ?? '';
-$gender         = $_POST['gender'] ?? '';
-$marital_status = $_POST['marital_status'] ?? '';
-$birthdate      = $_POST['birthdate'] ?? '';
-$nationality    = $_POST['nationality'] ?? '';
-$birthplace     = $_POST['birthplace'] ?? '';
-$home_address   = $_POST['home_address'] ?? '';
-$phone_number   = $_POST['phone_number'] ?? '';
-$email          = $_POST['email'] ?? '';
+$conn->begin_transaction();
 
-// 2. Collect Parents' Data
-$f_last   = $_POST['father_last_name'] ?? '';
-$f_first  = $_POST['father_first_name'] ?? '';
-$f_mid    = $_POST['father_middle_name'] ?? '';
-$f_suffix = $_POST['father_suffix'] ?? '';
-
-$m_last   = $_POST['mother_last_name'] ?? '';
-$m_first  = $_POST['mother_first_name'] ?? '';
-$m_mid    = $_POST['mother_middle_name'] ?? '';
-$m_suffix = $_POST['mother_suffix'] ?? '';
-
-// 3. Updated SQL with 20 placeholders (?)
 $sql = "INSERT INTO tbl_record (
-    last_name, first_name, middle_name, suffix, gender, marital_status, 
-    birthdate, nationality, birthplace, home_address, phone_number, email,
+    last_name, first_name, middle_name, suffix,
+    gender, marital_status, birthdate, nationality,
+    birthplace, home_address, phone_number, email,
     father_last_name, father_first_name, father_middle_name, father_suffix,
     mother_last_name, mother_first_name, mother_middle_name, mother_suffix
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 $stmt = $conn->prepare($sql);
-
-// "s" repeated 20 times for 20 string variables
-$stmt->bind_param("ssssssssssssssssssss", 
-    $last_name, $first_name, $middle_name, $suffix, $gender, $marital_status, 
-    $birthdate, $nationality, $birthplace, $home_address, $phone_number, $email,
-    $f_last, $f_first, $f_mid, $f_suffix,
-    $m_last, $m_first, $m_mid, $m_suffix
+$stmt->bind_param(
+    "ssssssssssssssssssss",
+    $_POST['last_name'],
+    $_POST['first_name'],
+    $_POST['middle_name'],
+    $_POST['suffix'],
+    $_POST['gender'],
+    $_POST['marital_status'],
+    $_POST['birthdate'],
+    $_POST['nationality'],
+    $_POST['birthplace'],
+    $_POST['home_address'],
+    $_POST['phone_number'],
+    $_POST['email'],
+    $_POST['father_last_name'],
+    $_POST['father_first_name'],
+    $_POST['father_middle_name'],
+    $_POST['father_suffix'],
+    $_POST['mother_last_name'],
+    $_POST['mother_first_name'],
+    $_POST['mother_middle_name'],
+    $_POST['mother_suffix']
 );
 
-if ($stmt->execute()) {
-    echo json_encode(['success' => true, 'message' => 'Record and Parent info saved!']);
-} else {
-    echo json_encode(['success' => false, 'message' => 'Error: ' . $stmt->error]);
+$stmt->execute();
+$record_id = $stmt->insert_id;
+$stmt->close();
+
+if (!empty($_POST['dep_name'])) {
+    $stmt = $conn->prepare(
+        "INSERT INTO tbl_dependents (record_id, dep_name, relationship, date_of_birth)
+         VALUES (?, ?, ?, ?)"
+    );
+
+    for ($i = 0; $i < count($_POST['dep_name']); $i++) {
+        if ($_POST['dep_name'][$i] !== '') {
+            $stmt->bind_param(
+                "isss",
+                $record_id,
+                $_POST['dep_name'][$i],
+                $_POST['dep_rel'][$i],
+                $_POST['dep_dob'][$i]
+            );
+            $stmt->execute();
+        }
+    }
+    $stmt->close();
 }
 
+$stmt = $conn->prepare(
+    "INSERT INTO tbl_employment_info (
+        record_id, profession, year_started, se_monthly_earnings,
+        foreign_address, ofw_monthly_earnings,
+        spouse_ss_number, spouse_income
+    ) VALUES (?,?,?,?,?,?,?,?)"
+);
+
+$stmt->bind_param(
+    "isssdssd",
+    $record_id,
+    $_POST['profession'],
+    $_POST['year_started'],
+    $_POST['monthly_earnings'],
+    $_POST['foreign_address'],
+    $_POST['ofw_monthly_earnings'],
+    $_POST['spouse_ss_number'],
+    $_POST['spouse_income']
+);
+
+$stmt->execute();
 $stmt->close();
+
+$stmt = $conn->prepare(
+    "INSERT INTO tbl_certification (record_id, printed_name, signature, cert_date)
+     VALUES (?, ?, ?, ?)"
+);
+
+$stmt->bind_param(
+    "isss",
+    $record_id,
+    $_POST['printed_name'],
+    $_POST['signature'],
+    $_POST['cert_date']
+);
+
+$stmt->execute();
+$stmt->close();
+
+
+$conn->commit();
 $conn->close();
-?>
+
+echo json_encode(['success' => true]);

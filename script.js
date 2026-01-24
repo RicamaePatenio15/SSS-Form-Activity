@@ -7,8 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const formStatus = document.getElementById('formStatus');
     
     const errorMessages = {};
-    
-    // UPDATED: Included Parent Info IDs in the error div creation loop
+
     [
         'last_name', 'first_name', 'birthdate', 'nationality', 'home_address', 
         'birthplace', 'phone_number', 'email',
@@ -42,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
         errorMessages['marital_status'] = errorDiv;
     }
     
-    // Function to apply uppercase to any input or textarea
     function applyUppercaseToField(field) {
         if (!field) return;
         
@@ -60,19 +58,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Apply uppercase logic to text inputs
     document.querySelectorAll('input[type="text"]').forEach(applyUppercaseToField);
     
   sameAddressCheckbox.addEventListener('change', function() {
     if (this.checked) {
         birthplaceInput.value = homeAddressInput.value.toUpperCase();
-        // Change 'disabled' to 'readOnly'
         birthplaceInput.readOnly = true; 
         birthplaceInput.style.backgroundColor = '#f5f5f5';
         birthplaceInput.style.cursor = 'not-allowed';
         clearError('birthplace');
     } else {
-        // Change 'disabled' to 'readOnly'
         birthplaceInput.readOnly = false;
         birthplaceInput.style.backgroundColor = '';
         birthplaceInput.style.cursor = '';
@@ -88,8 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function validateForm() {
         let isValid = true;
         clearAllErrors();
-        
-        // UPDATED: Added Parents' information to the required list
+
         const requiredFields = [
             { id: 'last_name', name: 'Last Name' },
             { id: 'first_name', name: 'First Name' },

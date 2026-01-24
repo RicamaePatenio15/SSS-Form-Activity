@@ -1,16 +1,12 @@
 <?php
-// 1. Database Connection
 $conn = new mysqli("localhost", "root", "", "patenio_form");
 
-// Check connection
 if ($conn->connect_error) {
     $next_ss_number = 1; 
 } else {
-    // 2. Get the current maximum ID
     $result = $conn->query("SELECT MAX(id) AS max_id FROM tbl_record");
     $row = $result->fetch_assoc();
-    
-    // If table is empty, max_id is null, so we start at 1
+
     $next_ss_number = ($row['max_id'] === null) ? 1 : $row['max_id'] + 1;
 }
 
