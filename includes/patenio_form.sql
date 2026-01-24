@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 23, 2026 at 01:38 PM
+-- Generation Time: Jan 24, 2026 at 04:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,73 @@ SET time_zone = "+00:00";
 --
 -- Database: `patenio_form`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_certification`
+--
+
+CREATE TABLE `tbl_certification` (
+  `id` int(11) NOT NULL,
+  `record_id` int(11) NOT NULL,
+  `printed_name` varchar(255) DEFAULT NULL,
+  `signature` varchar(255) DEFAULT NULL,
+  `cert_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_certification`
+--
+
+INSERT INTO `tbl_certification` (`id`, `record_id`, `printed_name`, `signature`, `cert_date`) VALUES
+(1, 1, '', '', '2026-01-24');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_dependents`
+--
+
+CREATE TABLE `tbl_dependents` (
+  `id` int(11) NOT NULL,
+  `record_id` int(11) NOT NULL,
+  `dep_name` varchar(255) DEFAULT NULL,
+  `relationship` varchar(100) DEFAULT NULL,
+  `date_of_birth` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_dependents`
+--
+
+INSERT INTO `tbl_dependents` (`id`, `record_id`, `dep_name`, `relationship`, `date_of_birth`) VALUES
+(1, 1, 'JOHN DAVID PATENIO', 'BROTHER', '0006-08-26');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_employment_info`
+--
+
+CREATE TABLE `tbl_employment_info` (
+  `id` int(11) NOT NULL,
+  `record_id` int(11) NOT NULL,
+  `profession` varchar(255) DEFAULT NULL,
+  `year_started` varchar(10) DEFAULT NULL,
+  `se_monthly_earnings` decimal(10,2) DEFAULT NULL,
+  `foreign_address` varchar(255) DEFAULT NULL,
+  `ofw_monthly_earnings` decimal(10,2) DEFAULT NULL,
+  `spouse_ss_number` varchar(20) DEFAULT NULL,
+  `spouse_income` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_employment_info`
+--
+
+INSERT INTO `tbl_employment_info` (`id`, `record_id`, `profession`, `year_started`, `se_monthly_earnings`, `foreign_address`, `ofw_monthly_earnings`, `spouse_ss_number`, `spouse_income`) VALUES
+(1, 1, 'CANDLE BUSINESS', '2010', 15000.00, '0', 0.00, '', 0.00);
 
 -- --------------------------------------------------------
 
@@ -41,22 +108,48 @@ CREATE TABLE `tbl_record` (
   `home_address` text NOT NULL,
   `phone_number` varchar(20) NOT NULL,
   `email` varchar(150) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `father_last_name` varchar(100) DEFAULT NULL,
+  `father_first_name` varchar(100) DEFAULT NULL,
+  `father_middle_name` varchar(100) DEFAULT NULL,
+  `father_suffix` varchar(20) DEFAULT NULL,
+  `mother_last_name` varchar(100) DEFAULT NULL,
+  `mother_first_name` varchar(100) DEFAULT NULL,
+  `mother_middle_name` varchar(100) DEFAULT NULL,
+  `mother_suffix` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_record`
 --
 
-INSERT INTO `tbl_record` (`id`, `last_name`, `first_name`, `middle_name`, `suffix`, `gender`, `marital_status`, `birthdate`, `nationality`, `birthplace`, `home_address`, `phone_number`, `email`, `created_at`) VALUES
-(1, 'BAS', 'EMMAN', 'ABENDAN', 'JR', 'Male', 'Single', '2025-12-03', 'PINOY', 'MINGLA', '', '09318475523', 'emman@gmail.com', '2026-01-23 12:19:01'),
-(2, 'RICA', 'PATENIO', 'BAS', 'DSAD', 'Male', 'Married', '2026-01-10', 'PINAY', '', '', '09993118452', 'rica@gmail.com', '2026-01-23 12:28:39'),
-(3, 'Q', 'Q', 'Q', '', 'Female', 'Single', '2026-01-07', 'DASDASD', '', '', '09121231234', 'oh@gmail.com', '2026-01-23 12:30:56'),
-(4, 'ACE', 'CAB', 'RE', '', 'Male', 'Married', '2025-01-08', 'RRWER', 'REWRWR', '', '09318475523', 'AXCE@GMAIL.COM', '2026-01-23 12:37:30');
+INSERT INTO `tbl_record` (`id`, `last_name`, `first_name`, `middle_name`, `suffix`, `gender`, `marital_status`, `birthdate`, `nationality`, `birthplace`, `home_address`, `phone_number`, `email`, `created_at`, `father_last_name`, `father_first_name`, `father_middle_name`, `father_suffix`, `mother_last_name`, `mother_first_name`, `mother_middle_name`, `mother_suffix`) VALUES
+(1, 'PATENIO', 'RICA MAE', 'BADAYOS', '', 'Female', 'Single', '2004-11-15', 'FILIPINO', 'SITIO SANGI', 'SITIO SANGI', '09982060487', 'rcmpatenio@gmail.com', '2026-01-23 19:02:01', 'PATENIO', 'ENRIQUE', 'BASALE', '', 'BADAYOS', 'AMY', 'CANADA', '');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `tbl_certification`
+--
+ALTER TABLE `tbl_certification`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `record_id` (`record_id`);
+
+--
+-- Indexes for table `tbl_dependents`
+--
+ALTER TABLE `tbl_dependents`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `record_id` (`record_id`);
+
+--
+-- Indexes for table `tbl_employment_info`
+--
+ALTER TABLE `tbl_employment_info`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `record_id` (`record_id`);
 
 --
 -- Indexes for table `tbl_record`
@@ -69,10 +162,50 @@ ALTER TABLE `tbl_record`
 --
 
 --
+-- AUTO_INCREMENT for table `tbl_certification`
+--
+ALTER TABLE `tbl_certification`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tbl_dependents`
+--
+ALTER TABLE `tbl_dependents`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tbl_employment_info`
+--
+ALTER TABLE `tbl_employment_info`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `tbl_record`
 --
 ALTER TABLE `tbl_record`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `tbl_certification`
+--
+ALTER TABLE `tbl_certification`
+  ADD CONSTRAINT `tbl_certification_ibfk_1` FOREIGN KEY (`record_id`) REFERENCES `tbl_record` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `tbl_dependents`
+--
+ALTER TABLE `tbl_dependents`
+  ADD CONSTRAINT `tbl_dependents_ibfk_1` FOREIGN KEY (`record_id`) REFERENCES `tbl_record` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `tbl_employment_info`
+--
+ALTER TABLE `tbl_employment_info`
+  ADD CONSTRAINT `tbl_employment_info_ibfk_1` FOREIGN KEY (`record_id`) REFERENCES `tbl_record` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
