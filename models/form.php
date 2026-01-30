@@ -55,8 +55,9 @@ $formatted_ss = substr($raw, 0, 2) . "-" . substr($raw, 2, 7) . "-" . substr($ra
                 </div>
             </div>
         </header>
-
+           
         <form id="sssForm">
+            <input type="hidden" name="record_id" value="<?php echo isset($_GET['id']) ? $_GET['id'] : ''; ?>">
             <section class="section">
                 <div class="maroon-bar">PART 1 - PERSONAL DETAILS</div>
 

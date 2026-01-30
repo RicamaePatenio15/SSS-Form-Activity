@@ -135,14 +135,6 @@ $formatted_ss = substr($raw, 0, 2) . "-" . substr($raw, 2, 7) . "-" . substr($ra
             </div>
         </section>
 
-        <section class="section">
-            <div class="maroon-bar">D. CERTIFICATION</div>
-            <div class="row" style="margin-top:20px;">
-                <div class="field"><p class="view-label">Printed Name</p><div class="view-value"><?php echo $cert['printed_name']; ?></div></div>
-                <div class="field"><p class="view-label">Signature (Typed)</p><div class="view-value" style="font-style: italic;"><?php echo $cert['signature']; ?></div></div>
-                <div class="field"><p class="view-label">Date Certified</p><div class="view-value"><?php echo $cert['cert_date']; ?></div></div>
-            </div>
-        </section>
     </div>
 </body>
 </html>

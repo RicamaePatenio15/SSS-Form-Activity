@@ -95,8 +95,16 @@
         <div style="background:#d4edda; color:#155724; padding:15px; border-radius:5px; text-align:center; border:1px solid #c3e6cb; margin-bottom:20px;">
             <strong>✓ Success!</strong> Record saved.
             <br><br>
-            <button type="button" onclick="window.location.href='../views/view.php?id=${data.id}'" style="padding:5px 10px; cursor:pointer;">View Record</button>
-            <button type="button" onclick="location.reload()" style="padding:5px 10px; cursor:pointer;">Stay Here</button>
+           <button type="button" 
+                onclick="window.location.href='../views/view.php?id=${data.id}'" 
+                style="padding:8px 15px; cursor:pointer; background:maroon; color:white; border:none; border-radius:4px; margin-right:5px;">
+            <i class="fas fa-eye"></i> View Record
+        </button>
+        <button type="button" 
+                onclick="location.reload()" 
+                style="padding:8px 15px; cursor:pointer; background:#6c757d; color:white; border:none; border-radius:4px;">
+            <i class="fas fa-sync"></i> Stay Here
+        </button>
         </div>`;
     
     const controls = document.querySelectorAll('#submitBtn, .btn-delete, .btn-cancel, a.btn-cancel, button.cancel-btn');
