@@ -68,3 +68,16 @@ textarea{resize:vertical;min-height:40px;line-height:1.4;}
 .error-message{color:var(--error-color);font-size:9px;margin-top:3px;display:none;}
 .error-message.show{display:block;}
 @media (max-width:768px){.container{padding:10px;}.form-header{flex-direction:column;text-align:center;gap:10px;}.employment-grid{grid-template-columns:1fr;}.button-group{flex-direction:column;}.btn{justify-content:center;}.row .field{padding:8px 10px;}.checkbox-options{display:flex;flex-wrap:wrap;gap:10px;margin-top:5px;}.checkbox-options label{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:normal;cursor:pointer;white-space:nowrap;}.row .field:first-child,.row .field:last-child{flex:1;}.gender-error,.status-error{color:var(--error-color);font-size:9px;margin-top:3px;display:none;}.gender-error.show,.status-error.show{display:block;}.row:nth-of-type(3) .field{min-height:60px;}}
+.btn-action {padding: 5px 10px;border: none;border-radius: 3px;font-size: 11px;cursor: pointer;color: white;display: inline-flex;align-items: center;gap: 4px;}
+.btn-view { background-color: #7d1c1c; }
+.btn-edit { background-color: #7d1c1c; color: #ffffff; }
+.btn-delete { background-color: #7d1c1c; }
+.btn-action:hover { opacity: 0.8; }
+#formStatus {
+    transition: all 0.3s ease;
+    padding: 20px;
+}
+#formStatus p {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
