@@ -73,11 +73,5 @@ textarea{resize:vertical;min-height:40px;line-height:1.4;}
 .btn-edit { background-color: #7d1c1c; color: #ffffff; }
 .btn-delete { background-color: #7d1c1c; }
 .btn-action:hover { opacity: 0.8; }
-#formStatus {
-    transition: all 0.3s ease;
-    padding: 20px;
-}
-#formStatus p {
-    margin-bottom: 15px;
-    font-size: 16px;
-}
+#formStatus {transition: all 0.3s ease;padding: 20px;}
+#formStatus p {margin-bottom: 15px;font-size: 16px;}

@@ -45,7 +45,7 @@ $result = $conn->query($sql);
                 <tbody>
                     <?php if ($result->num_rows > 0): ?>
                         <?php while($row = $result->fetch_assoc()): 
-                            // Format SS Number logic
+        
                             $raw = str_pad($row['id'], 10, "0", STR_PAD_LEFT);
                             $formatted_ss = substr($raw, 0, 2) . "-" . substr($raw, 2, 7) . "-" . substr($raw, 9, 1);
                         ?>

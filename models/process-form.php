@@ -1,21 +1,18 @@
 <?php
 header('Content-Type: application/json');
 
-// Database Connection
 $conn = new mysqli("localhost", "root", "", "patenio_form");
 if ($conn->connect_error) {
     echo json_encode(['success' => false, 'message' => 'Database connection failed: ' . $conn->connect_error]);
     exit;
 }
 
-// Check if this is an Update or a New Entry
 $record_id = isset($_POST['record_id']) && !empty($_POST['record_id']) ? intval($_POST['record_id']) : null;
 $is_update = ($record_id !== null);
 
 $conn->begin_transaction();
 
 try {
-    // 1. Handle tbl_record (Main Personal Details)
     if ($is_update) {
         $sql = "UPDATE tbl_record SET 
                 last_name=?, first_name=?, middle_name=?, suffix=?,
@@ -62,8 +59,6 @@ try {
     }
     $stmt->close();
 
-    // 2. Handle tbl_dependents
-    // If updating, clear existing dependents first to avoid duplicates
     if ($is_update) {
         $conn->query("DELETE FROM tbl_dependents WHERE record_id = $record_id");
     }
@@ -82,7 +77,6 @@ try {
         $stmt_dep->close();
     }
 
-    // 3. Handle tbl_employment_info
     if ($is_update) {
         $sql_emp = "UPDATE tbl_employment_info SET 
                     profession=?, year_started=?, se_monthly_earnings=?,
@@ -109,7 +103,6 @@ try {
     $stmt_emp->execute();
     $stmt_emp->close();
 
-    // 4. Handle tbl_certification
     if ($is_update) {
         $stmt_cert = $conn->prepare("UPDATE tbl_certification SET printed_name=?, signature=?, cert_date=? WHERE record_id=?");
         $stmt_cert->bind_param("sssi", $_POST['printed_name'], $_POST['signature'], $_POST['cert_date'], $record_id);
@@ -120,7 +113,6 @@ try {
     $stmt_cert->execute();
     $stmt_cert->close();
 
-    // Success!
     $conn->commit();
     echo json_encode([
         'success' => true, 
@@ -129,7 +121,6 @@ try {
     ]);
 
 } catch (Exception $e) {
-    // If anything fails, undo all database changes
     $conn->rollback();
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }

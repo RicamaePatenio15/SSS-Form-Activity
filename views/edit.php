@@ -96,6 +96,46 @@ $formatted_ss = substr($raw, 0, 2) . "-" . substr($raw, 2, 7) . "-" . substr($ra
                     <div class="field"><label>MOBILE NUMBER</label><input type="text" name="phone_number" id="phone_number" value="<?php echo $member['phone_number']; ?>"></div>
                     <div class="field"><label>EMAIL ADDRESS</label><input type="email" name="email" id="email" value="<?php echo $member['email']; ?>"></div>
                 </div>
+
+                <section class="section">
+    <div class="maroon-bar">PARENTS' INFORMATION</div>
+    <div class="row">
+        <div class="field quarter">
+            <label>FATHER'S LAST NAME</label>
+            <input type="text" name="father_last_name" value="<?php echo $member['father_last_name'] ?? ''; ?>">
+        </div>
+        <div class="field quarter">
+            <label>FIRST NAME</label>
+            <input type="text" name="father_first_name" value="<?php echo $member['father_first_name'] ?? ''; ?>">
+        </div>
+        <div class="field quarter">
+            <label>MIDDLE NAME</label>
+            <input type="text" name="father_middle_name" value="<?php echo $member['father_middle_name'] ?? ''; ?>">
+        </div>
+        <div class="field quarter">
+            <label>SUFFIX</label>
+            <input type="text" name="father_suffix" value="<?php echo $member['father_suffix'] ?? ''; ?>">
+        </div>
+    </div>
+    <div class="row">
+        <div class="field quarter">
+            <label>MOTHER'S MAIDEN LAST NAME</label>
+            <input type="text" name="mother_last_name" value="<?php echo $member['mother_last_name'] ?? ''; ?>">
+        </div>
+        <div class="field quarter">
+            <label>FIRST NAME</label>
+            <input type="text" name="mother_first_name" value="<?php echo $member['mother_first_name'] ?? ''; ?>">
+        </div>
+        <div class="field quarter">
+            <label>MIDDLE NAME</label>
+            <input type="text" name="mother_middle_name" value="<?php echo $member['mother_middle_name'] ?? ''; ?>">
+        </div>
+        <div class="field quarter">
+            <label>SUFFIX</label>
+            <input type="text" name="mother_suffix" value="<?php echo $member['mother_suffix'] ?? ''; ?>">
+        </div>
+    </div>
+</section>
             </section>
 
             <section class="section">
@@ -140,12 +180,6 @@ $formatted_ss = substr($raw, 0, 2) . "-" . substr($raw, 2, 7) . "-" . substr($ra
                     <button type="submit" id="submitBtn" class="btn btn-submit" style="padding: 15px 40px; font-size: 16px; background: maroon; color: white; border: none; cursor: pointer;">
                         <i class="fas fa-save"></i> SAVE ALL CHANGES
                     </button>
-                    <button type="button" onclick="deleteRecord(<?php echo $id; ?>)" class="btn btn-reset" style="padding: 15px 40px; font-size: 16px; background: #555; color: white; border: none; cursor: pointer;">
-                        <i class="fas fa-trash"></i> DELETE
-                    </button>
-                    <a href="../index.php" class="btn btn-reset" style="padding: 15px 40px; font-size: 16px; text-decoration: none; display: inline-block; background: #ccc; color: black;">
-                        CANCEL
-                    </a>
                 </div>
             </div>
         </form>

@@ -92,19 +92,22 @@
                    if (data.success) {
     formStatus.style.display = 'block';
     formStatus.innerHTML = `
-        <div style="background:#d4edda; color:#155724; padding:15px; border-radius:5px; text-align:center; border:1px solid #c3e6cb; margin-bottom:20px;">
-            <strong>✓ Success!</strong> Record saved.
-            <br><br>
-           <button type="button" 
-                onclick="window.location.href='../views/view.php?id=${data.id}'" 
-                style="padding:8px 15px; cursor:pointer; background:maroon; color:white; border:none; border-radius:4px; margin-right:5px;">
-            <i class="fas fa-eye"></i> View Record
-        </button>
-        <button type="button" 
-                onclick="location.reload()" 
-                style="padding:8px 15px; cursor:pointer; background:#6c757d; color:white; border:none; border-radius:4px;">
-            <i class="fas fa-sync"></i> Stay Here
-        </button>
+       <div style="background:#d4edda; color:#155724; padding:15px; border-radius:5px; text-align:center; border:1px solid #c3e6cb; margin-bottom:20px;">
+            <strong><i class="fas fa-check-circle"></i> Success!</strong> Record saved.
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 30px;">
+            <button type="button" 
+                    onclick="window.location.href='../views/view.php?id=${data.id}'" 
+                    style="padding: 15px 40px; font-size: 16px; background: maroon; color: white; border: none; cursor: pointer; font-weight: normal; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-eye"></i> VIEW RECORD
+            </button>
+            
+            <button type="button" 
+                    onclick="location.reload()" 
+                    style="padding: 15px 40px; font-size: 16px; background: #6c757d; color: white; border: none; cursor: pointer; font-weight: normal; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-pen-to-square"></i> EDIT
+            </button>
         </div>`;
     
     const controls = document.querySelectorAll('#submitBtn, .btn-delete, .btn-cancel, a.btn-cancel, button.cancel-btn');
